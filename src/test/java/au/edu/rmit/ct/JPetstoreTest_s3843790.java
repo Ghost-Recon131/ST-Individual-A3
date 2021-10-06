@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 
 // Update this class name by replacing S3214321 with your student ID
-class JPetstoreTest_S3214321 {
+class JPetstoreTest_s3843790 {
     WebDriver myDriver;
 
 

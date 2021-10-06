@@ -18,7 +18,7 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 
 // Update this class name by replacing S3214321 with your student ID
-class MyPetstoreDemoW11_S3214321 {
+class MyPetstoreDemoW11_s3843790 {
     WebDriver myDriver;
 
     @Test
