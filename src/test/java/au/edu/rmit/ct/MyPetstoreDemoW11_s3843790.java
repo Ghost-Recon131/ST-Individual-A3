@@ -7,13 +7,13 @@
 package au.edu.rmit.ct;
 
 import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 
@@ -70,13 +70,30 @@ class MyPetstoreDemoW11_s3843790 {
             e.printStackTrace();
         }
         // Write the tests for these below using JUnit assertEquals and the findElements method
-        fail("Task 11.1 : Check that the price is $125.50");
-        fail("Task 11.2 : Check that the product name is correct (Adult Male Chihuahua) for this product page");
-        fail("Task 11.3 Check that the adult male chihuahua is in stock. ( > 0 )");
 
-        /**
-         * You will be asked to submit this for your Assignment 3 .
-         */
+        // Task 11.1 : Check that the price is $125.50
+        // Get value using Xpath, then check against expected value
+        WebElement webElement = myDriver.findElement(By.xpath("//td[text()='$125.50']"));
+        assertEquals("$125.50", webElement.getText(), "Should Equal $125.50");
+
+        // Task 11.2 : Check that the product name is correct (Adult Male Chihuahua) for this product page
+        WebElement webElement2 = myDriver.findElement(By.xpath("/html/body/div[@id='Content']/div[@id='Catalog']/table/tbody/tr[3]/td/b/font"));
+        assertEquals("Adult Male Chihuahua", webElement2.getText(), "Should Equal Adult Male Chihuahua");
+
+        // Task 11.3 Check that the adult male chihuahua is in stock. ( > 0 )
+        WebElement webElement3 = myDriver.findElement(By.xpath("/html/body/div[@id='Content']/div[@id='Catalog']/table/tbody/tr[5]/td"));
+
+        // get the string value and only keep the numerical value, then convert to int for final junit comparison
+        String stockOnly = webElement3.getText().replaceAll("[^0-9]", "");
+        int StockInteger = -1;
+        try{
+            StockInteger = Integer.parseInt(stockOnly);
+        }catch (NumberFormatException e){
+            System.err.println("Invalid value, value was " + stockOnly);
+        }
+        boolean hasStock = StockInteger > 0;
+        assertTrue(hasStock);
+
     }
 
     @Test
@@ -92,37 +109,6 @@ class MyPetstoreDemoW11_s3843790 {
         /**
          * You will be asked to submit this for your Assignment 3 .
          */
-    }
-
-    @Test
-    @Order(4)
-    @DisplayName("More examples with Xpath")
-    void checkChihuahua2(){
-
-        String chihuahuaURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-26";
-        myDriver.get(chihuahuaURL);
-
-        /**
-         * If you have time you can look further with this below.
-         * In week 11 we will look more at Xpath, which has powerful functionality to find elements and values
-         * Xpath is a bit like regular expressions for html elements (DOM tree)
-         */
-
-        WebElement we;
-        // Here we are using * to check all elements for their enclosed value
-        // <p>Like the value here</p>
-
-        // In this example we are searching only for td elements, which has exact text value
-        we = myDriver.findElement(By.xpath("//td[text()='$125.50']"));
-
-        // In this example we are searching only for any elements, which contains a particular string value
-        // (like a substring match)
-         we = myDriver.findElement(By.xpath("//*[contains(text(),'$125')]"));
-
-         System.out.println("we.toString(): " + we.toString()); // see what it looks like toString()
-         System.out.println("we.getText(): " + we.getText()); // see what the text is
-
-
     }
 
     @Test
