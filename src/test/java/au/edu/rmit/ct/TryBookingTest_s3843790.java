@@ -76,9 +76,6 @@ class TryBookingTest_s3843790 {
     @Order(2)
     @DisplayName("TryBooking: Check cancelled events")
     void CheckCancelledEvents() {
-        //TODO
-        // 1. Navigate to https://www.trybooking.com/book/searchLinks as above and check for featured and events near
-        //    "you". If any such event has '(Cancelled)' in its title, then this test case should fail.
         final String FeaturedEventsURL = "https://www.trybooking.com/book/searchLinks";
         final int TotalFeatureEvents = 6;
         final int TotalEventsNearYou = 6;
@@ -86,6 +83,7 @@ class TryBookingTest_s3843790 {
         AddDelay();
 
         ArrayList<String> FeatureEventsByXPathStatus = new ArrayList<>(); //Arraylist to store Titles grabbed by XPath
+        ArrayList<String> EventsNearYouByXPathStatus = new ArrayList<>();
 
         for (int i = 0, j = 1; i < TotalFeatureEvents; i++, j++) {
             String FeatureEventsXPath = "/html[@class='no-js']/body[@id='body_id']/div[@class='full-height-container ng-scope']" +
@@ -98,24 +96,25 @@ class TryBookingTest_s3843790 {
                     i +
                     "']/h2[@class='ng-binding']";
             WebElement FeatureEvents = myDriver.findElement(By.xpath(FeatureEventsXPath));
-            FeatureEvents.click(); // Go to each event in Featured events
-
-            String EventTitleXPath = "/html/body/div[@id='event-app']/div[@class='full-height-container']/div" +
-                    "[@id='partial-view-content']/div[@id='ko-event-landing']/div[@class='main-container  ']" +
-                    "/div[@class='view-container ']/div[@id='view-id']/div[@class='wrapper ']/div[@class='main-panel']" +
-                    "/div[@class='wrapper-narrow']/div[@class='padding-lr--sm']/div[@id='eventLandingSummary']/div[1]" +
-                    "/span[@class='event-name-container']/span[@class='event-name']";
-            WebElement EventTitle = myDriver.findElement(By.xpath(EventTitleXPath));
-            FeatureEventsByXPathStatus.add(EventTitle.getText()); // Add title to arraylist
-
-            // Return to main site
-            myDriver.get(FeaturedEventsURL);
-            AddDelay();
+            FeatureEventsByXPathStatus.add(FeatureEvents.getText());
         }
+
+        for (int i = 0, j = 1; i < TotalEventsNearYou; i++, j++) {
+            String FeatureEventsXPath = "/html[@class='no-js']/body[@id='body_id']/div[@class='full-height-container ng-scope']" +
+                    "/div[@id='mainContainer']/div[@id='view-id']/div[@class='init-search_wrapper_full ng-scope']" +
+                    "/div[@class='init-search_wrapper']/div[@class='init-search-results']/div[@id='EventsNearbySection']" +
+                    "/div[@class='init-search-results-parent margin-center no-style']/div[@class='init-search-results-child ng-scope']" +
+                    "[" +
+                    j +
+                    "]/div[@class='init-search-result-container']/div[@class='init-search-result']/a[@id='initSearchNavigateHeadingNearbyEventId_" +
+                    i +
+                    "']/h2[@class='ng-binding']";
+            WebElement EventsNearYou = myDriver.findElement(By.xpath(FeatureEventsXPath));
+            EventsNearYouByXPathStatus.add(EventsNearYou.getText());
+        }
+
         assertFalse(FeatureEventsByXPathStatus.contains("CANCELLED"), "Test will fail if an event is cancelled");
-
-
-
+        assertFalse(EventsNearYouByXPathStatus.contains("CANCELLED"), "Test will fail if an event is cancelled");
     }
 
     @Test
