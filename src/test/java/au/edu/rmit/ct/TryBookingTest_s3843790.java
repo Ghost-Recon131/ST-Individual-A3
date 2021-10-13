@@ -15,6 +15,7 @@ import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,6 +63,7 @@ class TryBookingTest_s3843790 {
             WebElement FeatureEvents = myDriver.findElement(By.xpath(FeatureEventsXPath));
             FeatureEventsByXPath.add(FeatureEvents.getText());
         }
+        // Manually added titles to a second arraylist to compare against
         FeatureEventsByHand.add("That’s Amore - The Dean Martin Story");
         FeatureEventsByHand.add("BLAK STAGE AT LA MAMA");
         FeatureEventsByHand.add("Marysville Music Weekend - Rescheduled");
@@ -85,6 +87,7 @@ class TryBookingTest_s3843790 {
         ArrayList<String> FeatureEventsByXPathStatus = new ArrayList<>(); //Arraylist to store Titles grabbed by XPath
         ArrayList<String> EventsNearYouByXPathStatus = new ArrayList<>();
 
+        // Add all Featured Titles to an arraylist
         for (int i = 0, j = 1; i < TotalFeatureEvents; i++, j++) {
             String FeatureEventsXPath = "/html[@class='no-js']/body[@id='body_id']/div[@class='full-height-container ng-scope']" +
                     "/div[@id='mainContainer']/div[@id='view-id']/div[@class='init-search_wrapper_full ng-scope']/div[@class='init-search_wrapper']/div" +
@@ -96,9 +99,11 @@ class TryBookingTest_s3843790 {
                     i +
                     "']/h2[@class='ng-binding']";
             WebElement FeatureEvents = myDriver.findElement(By.xpath(FeatureEventsXPath));
-            FeatureEventsByXPathStatus.add(FeatureEvents.getText());
+            FeatureEventsByXPathStatus.add(FeatureEvents.getText().toUpperCase());
+            // Used toUpperCase() here to avoid different ways Cancelled could be written ie cancelled, Cancelled, CANCELLED
         }
 
+        // Add all Events Near You Titles to an arraylist
         for (int i = 0, j = 1; i < TotalEventsNearYou; i++, j++) {
             String FeatureEventsXPath = "/html[@class='no-js']/body[@id='body_id']/div[@class='full-height-container ng-scope']" +
                     "/div[@id='mainContainer']/div[@id='view-id']/div[@class='init-search_wrapper_full ng-scope']" +
@@ -110,9 +115,10 @@ class TryBookingTest_s3843790 {
                     i +
                     "']/h2[@class='ng-binding']";
             WebElement EventsNearYou = myDriver.findElement(By.xpath(FeatureEventsXPath));
-            EventsNearYouByXPathStatus.add(EventsNearYou.getText());
+            EventsNearYouByXPathStatus.add(EventsNearYou.getText().toUpperCase());
         }
 
+        // Look for the word "CANCELLED" in both arraylists
         assertFalse(FeatureEventsByXPathStatus.contains("CANCELLED"), "Test will fail if an event is cancelled");
         assertFalse(EventsNearYouByXPathStatus.contains("CANCELLED"), "Test will fail if an event is cancelled");
     }
