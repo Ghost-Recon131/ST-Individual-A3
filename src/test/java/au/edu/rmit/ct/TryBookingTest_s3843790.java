@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 // Update this class name by replacing S3214321 with your student ID
 class TryBookingTest_s3843790 {
     WebDriver myDriver;
-
+//TODO check out find by linked text
 
     @Test
     // @Disabled
@@ -34,6 +34,49 @@ class TryBookingTest_s3843790 {
         String url = "https://www.trybooking.com/book/search";
         myDriver.get(url);
         assertEquals("Buy tickets | TryBooking Australia", myDriver.getTitle());
+    }
+
+    @Test
+    @Order(1)
+    @DisplayName("TryBooking: Check featured events")
+    void CheckFeaturedEvents() {
+        //TODO
+        // 1. Navigate to https://www.trybooking.com/book/searchLinks print-to-screen the featured event titles.
+        //    Store these titles in a suitable variable in your test case (list? arrays?).
+        // 2. Update your test case to use assertEquals to compare these titles with a new test case run. You are
+        //    expected to show that this test case passes.
+
+        final String FeaturedEventsURL = "https://www.trybooking.com/book/searchLinks";
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("TryBooking: Check cancelled events")
+    void CheckCancelledEvents() {
+        //TODO
+        // 1. Navigate to https://www.trybooking.com/book/searchLinks as above and check for featured and events near
+        //    "you". If any such event has '(Cancelled)' in its title, then this test case should fail.
+
+        final String FeaturedEventsURL = "https://www.trybooking.com/book/searchLinks";
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("TryBooking: Book into an event")
+    void BookIntoEvent() {
+        //TODO
+        // 1. Navigate to https://www.trybooking.com/BUOMOLinks and book to one of the Monday or Thursday sessions,
+        // completing all of any optional data collection questions asked, using your student email ID.
+
+        final String FeaturedEventsURL = "https://www.trybooking.com/BUOMOLinks";
+    }
+
+    void AddDelay(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @BeforeEach
