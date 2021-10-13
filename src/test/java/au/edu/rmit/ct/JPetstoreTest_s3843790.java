@@ -39,15 +39,9 @@ class JPetstoreTest_s3843790 {
         @Order(1)
         @DisplayName("Task 11.1 : Check that the price is $125.50")
         void checkChihuahuaPrice() {
-
             String chihuahuaURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-26";
             myDriver.get(chihuahuaURL);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            AddDelay();
 
             // Get value using Xpath, then check against expected value
             WebElement webElement = myDriver.findElement(By.xpath("//td[text()='$125.50']"));
@@ -58,15 +52,9 @@ class JPetstoreTest_s3843790 {
         @Order(2)
         @DisplayName("Task 11.2 : Check that the product name is correct (Adult Male Chihuahua) for this product page")
         void checkChihuahuaProductName() {
-
             String chihuahuaURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-26";
             myDriver.get(chihuahuaURL);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            AddDelay();
 
             WebElement webElement2 = myDriver.findElement(By.xpath("/html/body/div[@id='Content']/div[@id='Catalog']/table/tbody/tr[3]/td/b/font"));
             assertEquals("Adult Male Chihuahua", webElement2.getText(), "Should Equal Adult Male Chihuahua");
@@ -76,16 +64,9 @@ class JPetstoreTest_s3843790 {
         @Order(3)
         @DisplayName("Task 11.3 Check that the adult male chihuahua is in stock. ( > 0 )")
         void checkChihuahuaStock() {
-
             String chihuahuaURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-26";
             myDriver.get(chihuahuaURL);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            AddDelay();
             WebElement webElement3 = myDriver.findElement(By.xpath("/html/body/div[@id='Content']/div[@id='Catalog']/table/tbody/tr[5]/td"));
 
             // get the string value and only keep the numerical value, then convert to int for final junit comparison
@@ -109,12 +90,7 @@ class JPetstoreTest_s3843790 {
         void checkAnotherPetPrice() {
             String chihuahuaURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-17";
             myDriver.get(chihuahuaURL);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            AddDelay();
 
             // Get value using Xpath, then check against expected value
             WebElement webElement = myDriver.findElement(By.xpath("//td[text()='$93.50']"));
@@ -125,15 +101,9 @@ class JPetstoreTest_s3843790 {
         @Order(5)
         @DisplayName("Task 11.5 : Check that the product name is correct (Adult Male Persian) for this product page")
         void checkAnotherPetProductName() {
-
             String chihuahuaURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-17";
             myDriver.get(chihuahuaURL);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            AddDelay();
 
             WebElement webElement2 = myDriver.findElement(By.xpath("/html/body/div[@id='Content']/div[@id='Catalog']/table/tbody/tr[3]/td/b/font"));
             assertEquals("Adult Male Persian", webElement2.getText(), "Should Equal Adult Male Persian");
@@ -145,13 +115,7 @@ class JPetstoreTest_s3843790 {
         void checkAnotherPetStock() {
             String chihuahuaURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-17";
             myDriver.get(chihuahuaURL);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            AddDelay();
             WebElement webElement3 = myDriver.findElement(By.xpath("/html/body/div[@id='Content']/div[@id='Catalog']/table/tbody/tr[5]/td"));
 
             // get the string value and only keep the numerical value, then convert to int for final junit comparison
@@ -180,6 +144,7 @@ class JPetstoreTest_s3843790 {
         // Add the 3 sharks to cart:
         for (int i = 0; i < 3; i++) {
             myDriver.get(ToothlessTigerSharkURL);
+            AddDelay();
             webElement = myDriver.findElement(By.className("Button"));
             if (Objects.equals(webElement.getText(), "Add to Cart")){
                 webElement.click();
@@ -189,6 +154,7 @@ class JPetstoreTest_s3843790 {
         // Add the 2 cats to cart:
         for (int i = 0; i < 2; i++) {
             myDriver.get(AdultMalePersianURL);
+            AddDelay();
             webElement = myDriver.findElement(By.className("Button"));
             if (Objects.equals(webElement.getText(), "Add to Cart")){
                 webElement.click();
@@ -197,6 +163,7 @@ class JPetstoreTest_s3843790 {
 
         // Add the 1 bird to cart:
         myDriver.get(AdultMaleAmazonParrotURL);
+        AddDelay();
         webElement = myDriver.findElement(By.className("Button"));
         if (Objects.equals(webElement.getText(), "Add to Cart")){
             webElement.click();
@@ -204,9 +171,18 @@ class JPetstoreTest_s3843790 {
 
         // Go to cart
         myDriver.get("https://petstore.octoperf.com/actions/Cart.action?viewCart=");
+        AddDelay();
         webElement = myDriver.findElement(By.xpath("//*[contains(text(),'Sub Total')]"));
-        // System.out.println(we.getText());
+
         assertEquals(ExpectedCartTotal, webElement.getText(), "Expect the values to match" );
+    }
+
+    void AddDelay(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @BeforeEach
