@@ -12,6 +12,7 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 // Update this class name by replacing S3214321 with your student ID
 class JPetstoreTest_s3843790 {
     WebDriver myDriver;
+    WebElement webElement;
 
     @Test
     // @Disabled
@@ -169,13 +171,42 @@ class JPetstoreTest_s3843790 {
     @Order(7)
     @DisplayName("StartAMenagerie Task")
     void StartAMenagerie() {
-        //TODO 3 x fish, 2 x cat, and 1 x bird.
-        // Check the subtotal matches the expected price.
+        // Setting constants; the webpage URL and Expected price (calculated manually)
         final String ToothlessTigerSharkURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-3";
         final String AdultMalePersianURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-17";
-        final String AdultMaleAmazonParrotURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-17";
-        // Add the 3 sharks to cart:
+        final String AdultMaleAmazonParrotURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-18";
+        final String ExpectedCartTotal = "Sub Total: $436.00";
 
+        // Add the 3 sharks to cart:
+        for (int i = 0; i < 3; i++) {
+            myDriver.get(ToothlessTigerSharkURL);
+            webElement = myDriver.findElement(By.className("Button"));
+            if (Objects.equals(webElement.getText(), "Add to Cart")){
+                webElement.click();
+            }
+        }
+
+        // Add the 2 cats to cart:
+        for (int i = 0; i < 2; i++) {
+            myDriver.get(AdultMalePersianURL);
+            webElement = myDriver.findElement(By.className("Button"));
+            if (Objects.equals(webElement.getText(), "Add to Cart")){
+                webElement.click();
+            }
+        }
+
+        // Add the 1 bird to cart:
+        myDriver.get(AdultMaleAmazonParrotURL);
+        webElement = myDriver.findElement(By.className("Button"));
+        if (Objects.equals(webElement.getText(), "Add to Cart")){
+            webElement.click();
+        }
+
+        // Go to cart
+        myDriver.get("https://petstore.octoperf.com/actions/Cart.action?viewCart=");
+        webElement = myDriver.findElement(By.xpath("//*[contains(text(),'Sub Total')]"));
+        // System.out.println(we.getText());
+        assertEquals(ExpectedCartTotal, webElement.getText(), "Expect the values to match" );
     }
 
     @BeforeEach
