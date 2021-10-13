@@ -1,16 +1,18 @@
-/**
+/*
  JPetstore JUnit/Webdriver Tasks:
- 1) Check the pet name, price and check if there is stock for one pet of your choice (outside of Male Chihuahua). (as outlined for W11 prac)
- 2) Start a menagerie! Select a specific fish, specific cat, and a third pet (they will have a unique item ID). Add 3 multiples of the first, 2 multiples of the cat, and one of the third pet to the cart. Check the subtotal matches the expected price. You are expected to show that this test case passes.  */
+ 1) Check the pet name, price and check if there is stock for one pet of your choice (outside of Male Chihuahua). (as outlined for W11 Prac)
+ 2) Start a menagerie! Select a specific fish, specific cat, and a third pet (they will have a unique item ID).
+    Add 3 multiples of the first, 2 multiples of the cat, and one of the third pet to the cart. Check the subtotal matches the expected price.
+    You are expected to show that this test case passes.
+ */
+
 package au.edu.rmit.ct;
 
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.fail;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 
@@ -96,47 +98,65 @@ class JPetstoreTest_s3843790 {
 
     @Test
     @Order(4)
-    @DisplayName("Check Price for another pet you might like to own at product page")
+    @DisplayName("Task 11.4 : Check that the price is $93.50")
     void checkAnotherPetPrice() {
+        String chihuahuaURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-17";
+        myDriver.get(chihuahuaURL);
 
-        // Write the tests for these below using JUnit assertEquals and the findElements method
-        fail("Task 11.4 : Check that the price is ??? using JUnit assertEquals");
-        fail("Task 11.5 : Check that the product name is correct (???) for this product page");
-        fail("Task 11.6 Check that the ??? is in stock. ( > 0 )");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        /**
-         * You will be asked to submit this for your Assignment 3 .
-         */
+        // Get value using Xpath, then check against expected value
+        WebElement webElement = myDriver.findElement(By.xpath("//td[text()='$93.50']"));
+        assertEquals("$93.50", webElement.getText(), "Should Equal 93.50");
     }
 
     @Test
     @Order(5)
-    @DisplayName("Check Price for another pet you might like to own at product page")
+    @DisplayName("Task 11.5 : Check that the product name is correct (Adult Male Persian) for this product page")
     void checkAnotherPetProductName() {
 
-        // Write the tests for these below using JUnit assertEquals and the findElements method
-        fail("Task 11.4 : Check that the price is ??? using JUnit assertEquals");
-        fail("Task 11.5 : Check that the product name is correct (???) for this product page");
-        fail("Task 11.6 Check that the ??? is in stock. ( > 0 )");
+        String chihuahuaURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-17";
+        myDriver.get(chihuahuaURL);
 
-        /**
-         * You will be asked to submit this for your Assignment 3 .
-         */
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        WebElement webElement2 = myDriver.findElement(By.xpath("/html/body/div[@id='Content']/div[@id='Catalog']/table/tbody/tr[3]/td/b/font"));
+        assertEquals("Adult Male Persian", webElement2.getText(), "Should Equal Adult Male Persian");
     }
 
     @Test
     @Order(6)
-    @DisplayName("Check Price for another pet you might like to own at product page")
+    @DisplayName("Task 11.6 Check that the Adult Male Persian is in stock. ( > 0 )")
     void checkAnotherPetStock() {
+        String chihuahuaURL = "https://petstore.octoperf.com/actions/Catalog.action?viewItem=&itemId=EST-17";
+        myDriver.get(chihuahuaURL);
 
-        // Write the tests for these below using JUnit assertEquals and the findElements method
-        fail("Task 11.4 : Check that the price is ??? using JUnit assertEquals");
-        fail("Task 11.5 : Check that the product name is correct (???) for this product page");
-        fail("Task 11.6 Check that the ??? is in stock. ( > 0 )");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        /**
-         * You will be asked to submit this for your Assignment 3 .
-         */
+        WebElement webElement3 = myDriver.findElement(By.xpath("/html/body/div[@id='Content']/div[@id='Catalog']/table/tbody/tr[5]/td"));
+
+        // get the string value and only keep the numerical value, then convert to int for final junit comparison
+        String stockOnly = webElement3.getText().replaceAll("[^0-9]", "");
+        int StockInteger = -1;
+        try{
+            StockInteger = Integer.parseInt(stockOnly);
+        }catch (NumberFormatException e){
+            System.err.println("Invalid value, value was " + stockOnly);
+        }
+        boolean hasStock = StockInteger > 0;
+        assertTrue(hasStock);
     }
 
     @BeforeEach
