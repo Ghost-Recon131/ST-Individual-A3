@@ -1,16 +1,12 @@
-# Selenium W12 Demo
+# About
+Jingxuan Feng
 
-Petstore Login - authentication fail
+Software Testing (ISYS1085)Individual Assignment 3
 
-Petstore Demo - Mary buys an Iguana, and pays for it
- 
- 
-# Selenium W11 Demo
-Petstore Demo task to check price, product name of Adult Male Chihuahua
+# References
+- [1] "Selenium WebDriver Handling Drop-Downs - javatpoint", www.javatpoint.com, 2021. [Online]. 
+   Available: https://www.javatpoint.com/selenium-webdriver-handling-drop-downs. [Accessed: 14- Oct- 2021].
 
-Further assessment task to do above for another pet of your choice.
 
-Advance option - using xpath
-
-# Selenium W10 Demo
- My first Selenium Junit demo
+- [2] "Selenium CSS Selector - Class - javatpoint", www.javatpoint.com, 2021. [Online]. 
+   Available: https://www.javatpoint.com/selenium-css-selector-class. [Accessed: 14- Oct- 2021].
