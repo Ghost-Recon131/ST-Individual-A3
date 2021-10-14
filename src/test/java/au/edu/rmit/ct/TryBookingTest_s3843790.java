@@ -7,16 +7,12 @@
  3) Navigate to https://www.trybooking.com/BUOMO (Links to an external site.) and book to one of the Monday or Thursday sessions, completing all of any optional data collection questions asked, using your student email ID.
  */
 package au.edu.rmit.ct;
-
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
+import org.openqa.selenium.support.ui.Select;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -127,11 +123,76 @@ class TryBookingTest_s3843790 {
     @Order(3)
     @DisplayName("TryBooking: Book into an event")
     void BookIntoEvent() {
-        //TODO
-        // 1. Navigate to https://www.trybooking.com/BUOMOLinks and book to one of the Monday or Thursday sessions,
-        // completing all of any optional data collection questions asked, using your student email ID.
+        final String EventURL = "https://www.trybooking.com/BUOMO";
+        myDriver.get(EventURL);
+        AddDelay();
+        // XPath of the "Book now" button
+        final String ButtonXPath = "/html/body/div[@id='event-app']/div[@class='full-height-container']/div[@id='partial-view-content']" +
+                "/div[@id='ko-event-landing']/div[@class='main-container  ']/div[@class='view-container ']/div[@id='view-id']" +
+                "/div[@class='wrapper ']/div[@class='main-panel']/div[@class='wrapper-narrow']/div[@class='padding-lr--sm']" +
+                "/div[@id='book-button-top']/div[@id='sticky-bottom-btn']/div[@class='ko-container book-now-btn-container']" +
+                "/button[@class='btn btn-secondary text-uppercase btn-landing go-to-session']";
+        // Click on the button to go to Sessions page
+        WebElement webElement = myDriver.findElement(By.xpath(ButtonXPath));
+        webElement.click();
 
-        final String FeaturedEventsURL = "https://www.trybooking.com/BUOMOLinks";
+        AddDelay();
+        // XPath of the "Select" button for Monday session
+        final String SelectButtonXPath = "/html[@class='no-js']/body[@id='body_id']/div[@class='full-height-container ng-scope']" +
+                "/div[@id='mainContainer']/div[@id='view-id']/div[@class='wrapper main-content-wrapper ng-scope']/div[6]" +
+                "/div[@class='wrapper-narrow sessions-wrapper']/div[@class='grid--nopadding--sm sessions']/table[@class='table-style ng-scope']" +
+                "/tbody[@class='ng-scope odd-row-color']/tr[@class='no-border-top']/td[@class='td-md text-right vertical-center']" +
+                "/div[@class='control-column']/button[@id='sessionsButtonSessionsPageLargeId_0']/span[@class='btn-txt ng-binding']";
+        // Click on the button to go to Sessions page
+        WebElement webElement2 = myDriver.findElement(By.xpath(SelectButtonXPath));
+        webElement2.click();
+
+        AddDelay();
+        // Add 1 ticket to continue checkout
+        myDriver.findElement(By.name("quantity0")).clear();
+        myDriver.findElement(By.name("quantity0")).sendKeys("1");
+        myDriver.findElement(By.id("Next_addToCartBtn")).click();
+
+        // Fill in information
+        AddDelay();
+        // Select the relevant drop-down for "Day"; Referenced https://www.javatpoint.com/selenium-webdriver-handling-drop-downs
+        WebElement DayDropDownTest = myDriver.findElement(By.id("bookingDataField_546337_day"));
+        DayDropDownTest.click();
+
+        Select DayDropDown = new Select(DayDropDownTest); // TODO Fix error here
+        DayDropDown.selectByIndex(28);
+        AddDelay();
+        AddDelay();
+        AddDelay();
+        AddDelay(); // TODO Remove these after testing
+
+        // Select the relevant drop-down for "Month"
+        Select MonthDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546337_month")));
+        MonthDropDown.selectByIndex(10);
+        // Select the relevant drop-down for "Year"
+        Select YearDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546337_year")));
+        YearDropDown.selectByIndex(11);
+        // Select the relevant drop-down for "Do you have working video"
+        Select HaveVideoDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546337_year")));
+        HaveVideoDropDown.selectByIndex(1);
+        // Select the relevant drop-down for "Which software did you mainly test"
+        Select SoftwareDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546339")));
+        SoftwareDropDown.selectByIndex(3);
+        myDriver.findElement(By.id("ticketHolderDetails_Next")).click(); // Go to next page
+
+        AddDelay();
+        // Fill in Booking Details
+        myDriver.findElement(By.name("txtFirstName")).clear();
+        myDriver.findElement(By.name("txtFirstName")).sendKeys("Jingxuan");
+        myDriver.findElement(By.name("txtLastName")).clear();
+        myDriver.findElement(By.name("txtLastName")).sendKeys("Feng");
+        myDriver.findElement(By.name("txtLastName")).clear();
+        myDriver.findElement(By.name("txtLastName")).sendKeys("Feng");
+        myDriver.findElement(By.name("txtEmailAddress")).clear();
+        myDriver.findElement(By.name("txtEmailAddress")).sendKeys("s3843790@student.rmit.edu.au");
+        myDriver.findElement(By.name("txtConfirmEmailAddress")).clear();
+        myDriver.findElement(By.name("txtConfirmEmailAddress")).sendKeys("s3843790@student.rmit.edu.au");
+//        myDriver.findElement(By.name("btn-purchase-lg")).click();
     }
 
     void AddDelay(){
