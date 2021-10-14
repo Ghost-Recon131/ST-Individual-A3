@@ -147,25 +147,17 @@ class TryBookingTest_s3843790 {
         WebElement webElement2 = myDriver.findElement(By.xpath(SelectButtonXPath));
         webElement2.click();
 
-        AddDelay();
+        AddShortDelay();
         // Add 1 ticket to continue checkout
         myDriver.findElement(By.name("quantity0")).clear();
         myDriver.findElement(By.name("quantity0")).sendKeys("1");
         myDriver.findElement(By.id("Next_addToCartBtn")).click();
 
+        AddDelay();
         // Fill in information
-        AddDelay();
-        // Select the relevant drop-down for "Day"; Referenced https://www.javatpoint.com/selenium-webdriver-handling-drop-downs
-        WebElement DayDropDownTest = myDriver.findElement(By.id("bookingDataField_546337_day"));
-        DayDropDownTest.click();
-
-        Select DayDropDown = new Select(DayDropDownTest); // TODO Fix error here
+        // Select the relevant drop-down for "Day"; Referenced [1], see README file
+        Select DayDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546337_day"))); // TODO Fix error here
         DayDropDown.selectByIndex(28);
-        AddDelay();
-        AddDelay();
-        AddDelay();
-        AddDelay(); // TODO Remove these after testing
-
         // Select the relevant drop-down for "Month"
         Select MonthDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546337_month")));
         MonthDropDown.selectByIndex(10);
@@ -173,31 +165,46 @@ class TryBookingTest_s3843790 {
         Select YearDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546337_year")));
         YearDropDown.selectByIndex(11);
         // Select the relevant drop-down for "Do you have working video"
-        Select HaveVideoDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546337_year")));
-        HaveVideoDropDown.selectByIndex(1);
-        // Select the relevant drop-down for "Which software did you mainly test"
-        Select SoftwareDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546339")));
-        SoftwareDropDown.selectByIndex(3);
+        Select HaveVideoDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546338")));
+        HaveVideoDropDown.selectByVisibleText("Yes");
+
+        // Select the relevant drop-down for "Which software did you mainly test", this dropdown is in a Div rather than
+        // a Select, thus a different approach is used
+        myDriver.findElement(By.id("bookingDataField_546339")).click(); // first expand the dropdown list
+        AddShortDelay();
+        WebElement FOXITSelect = myDriver.findElement(By.id("ui-select-choices-row-0-2")); // locate the 2nd div
+        FOXITSelect.click();
         myDriver.findElement(By.id("ticketHolderDetails_Next")).click(); // Go to next page
 
         AddDelay();
         // Fill in Booking Details
-        myDriver.findElement(By.name("txtFirstName")).clear();
-        myDriver.findElement(By.name("txtFirstName")).sendKeys("Jingxuan");
-        myDriver.findElement(By.name("txtLastName")).clear();
-        myDriver.findElement(By.name("txtLastName")).sendKeys("Feng");
-        myDriver.findElement(By.name("txtLastName")).clear();
-        myDriver.findElement(By.name("txtLastName")).sendKeys("Feng");
-        myDriver.findElement(By.name("txtEmailAddress")).clear();
-        myDriver.findElement(By.name("txtEmailAddress")).sendKeys("s3843790@student.rmit.edu.au");
-        myDriver.findElement(By.name("txtConfirmEmailAddress")).clear();
-        myDriver.findElement(By.name("txtConfirmEmailAddress")).sendKeys("s3843790@student.rmit.edu.au");
+        myDriver.findElement(By.id("txtFirstName")).clear();
+        myDriver.findElement(By.id("txtFirstName")).sendKeys("Jingxuan");
+        myDriver.findElement(By.id("txtLastName")).clear();
+        myDriver.findElement(By.id("txtLastName")).sendKeys("Feng");
+        myDriver.findElement(By.id("txtLastName")).clear();
+        myDriver.findElement(By.id("txtLastName")).sendKeys("Feng");
+        myDriver.findElement(By.id("txtEmailAddress")).clear();
+        myDriver.findElement(By.id("txtEmailAddress")).sendKeys("s3843790@student.rmit.edu.au");
+        myDriver.findElement(By.id("txtConfirmEmailAddress")).clear();
+        myDriver.findElement(By.id("txtConfirmEmailAddress")).sendKeys("s3843790@student.rmit.edu.au");
+
+        // Checkbox is a CSS field, need CSS selector, referenced:
+
 //        myDriver.findElement(By.name("btn-purchase-lg")).click();
     }
 
     void AddDelay(){
         try {
             Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void AddShortDelay(){
+        try {
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
