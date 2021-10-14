@@ -9,6 +9,7 @@
 package au.edu.rmit.ct;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -20,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 // Update this class name by replacing S3214321 with your student ID
 class TryBookingTest_s3843790 {
     WebDriver myDriver;
-//TODO check out find by linked text
 
     @Test
     // @Disabled
@@ -125,6 +125,7 @@ class TryBookingTest_s3843790 {
     void BookIntoEvent() {
         final String EventURL = "https://www.trybooking.com/BUOMO";
         myDriver.get(EventURL);
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) myDriver;
         AddDelay();
         // XPath of the "Book now" button
         final String ButtonXPath = "/html/body/div[@id='event-app']/div[@class='full-height-container']/div[@id='partial-view-content']" +
@@ -156,7 +157,7 @@ class TryBookingTest_s3843790 {
         AddDelay();
         // Fill in information
         // Select the relevant drop-down for "Day"; Referenced [1], see README file
-        Select DayDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546337_day"))); // TODO Fix error here
+        Select DayDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546337_day")));
         DayDropDown.selectByIndex(28);
         // Select the relevant drop-down for "Month"
         Select MonthDropDown = new Select(myDriver.findElement(By.id("bookingDataField_546337_month")));
@@ -189,9 +190,19 @@ class TryBookingTest_s3843790 {
         myDriver.findElement(By.id("txtConfirmEmailAddress")).clear();
         myDriver.findElement(By.id("txtConfirmEmailAddress")).sendKeys("s3843790@student.rmit.edu.au");
 
-        // Checkbox is a CSS field, need CSS selector, referenced:
+        // Checkbox is a CSS field, need CSS selector, referenced [2]
+        WebElement SpecialOfferCheckbox = myDriver.findElement(By.cssSelector("label[for=terms-and-privacy-cb]"));
+        // Javascript execution is needed, referenced [3]
+        javascriptExecutor.executeScript("arguments[0].scrollIntoView()", SpecialOfferCheckbox);
+        SpecialOfferCheckbox.click();
+        myDriver.findElement(By.id("btn-purchase-lg")).click(); // proceed to "checkout"
+        // Long delay is used since sometimes the checkout confirmation page can get stuck for quite a while
+        AddLongDelay();
 
-//        myDriver.findElement(By.name("btn-purchase-lg")).click();
+        final String TransactionResultXPath = "/html/body/div[@class='checkout-container']/div[@class='container container-auto-height']" +
+                "/main[@class='pb-0 pb-md-3']/div[@class='tryb-confirmation']/div[@class='pt-5']/div[@class='mb-3']/h1[@class='mb-3 mt-3']/span";
+        WebElement TransactionResult = myDriver.findElement(By.xpath(TransactionResultXPath));
+        assertEquals("Transaction successful", TransactionResult.getText(), "Expect 'Transaction successful'");
     }
 
     void AddDelay(){
@@ -205,6 +216,14 @@ class TryBookingTest_s3843790 {
     void AddShortDelay(){
         try {
             Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void AddLongDelay(){
+        try {
+            Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
