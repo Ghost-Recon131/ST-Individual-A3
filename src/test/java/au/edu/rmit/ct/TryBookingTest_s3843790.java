@@ -57,6 +57,7 @@ class TryBookingTest_s3843790 {
                     i +
                     "']/h2[@class='ng-binding']";
             WebElement FeatureEvents = myDriver.findElement(By.xpath(FeatureEventsXPath));
+            System.out.println(FeatureEvents.getText());
             FeatureEventsByXPath.add(FeatureEvents.getText());
         }
         // Manually added titles to a second arraylist to compare against
